@@ -49,6 +49,8 @@ body {
   font-family: 'Outfit', 'Noto Sans KR', sans-serif;
   min-height: 100vh;
   background: var(--bg-gradient);
+  background-size: cover;
+  background-position: center;
   background-attachment: fixed;
   color: var(--text-primary);
   display: flex;
@@ -83,6 +85,29 @@ body {
   margin-bottom: 2rem;
 }
 
+.top-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.contact-btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--primary-gradient);
+  border-radius: 20px;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
 .theme-toggle-btn {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -109,7 +134,8 @@ body {
 .theme-toggle-btn svg {
   width: 20px;
   height: 20px;
-  fill: currentColor;
+  fill: none;
+  stroke: currentColor;
 }
 
 /* 메인 컨테이너 */
@@ -306,7 +332,7 @@ header p {
 }
 
 [data-theme="dark"] .favicon-container {
-  background: #ffffff; /* 파비콘의 가독성을 위해 배경은 흰색 유지 */
+  background: #ffffff;
 }
 
 .link-card:hover .favicon-container {
@@ -331,6 +357,14 @@ header p {
   background: #e0e7ff;
   border-radius: 50%;
   text-transform: uppercase;
+}
+
+/* 이모지 아이콘 스타일 */
+.emoji-icon {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 카드 타이틀 */
@@ -390,7 +424,7 @@ header p {
   color: #ef4444;
 }
 
-/* 모달 스타일 */
+/* 모달 공통 스타일 */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -432,6 +466,12 @@ header p {
   transform: translateY(0);
 }
 
+/* 관리자 전용 큰 모달 박스 */
+.admin-modal-box {
+  max-width: 580px;
+  text-align: left;
+}
+
 .modal-close-btn {
   position: absolute;
   top: 1.2rem;
@@ -441,6 +481,7 @@ header p {
   cursor: pointer;
   color: var(--text-secondary);
   transition: color 0.2s ease;
+  z-index: 10;
 }
 
 .modal-close-btn:hover {
@@ -525,7 +566,194 @@ header p {
   box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
 }
 
-/* 푸터 */
+/* ==========================================================================
+   관리자 모드 전용 스타일
+   ========================================================================== */
+.admin-section {
+  display: none;
+}
+
+.admin-section.active {
+  display: block;
+}
+
+.admin-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  border: 1px solid var(--search-border);
+  background: var(--search-bg);
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.admin-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+/* 관리자 모드 탭 메뉴 */
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  color: var(--primary-color);
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -0.85rem;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
+/* 탭 본문 영역 */
+.tab-content {
+  display: none;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* 링크 관리 목록 */
+.admin-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-link-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+[data-theme="dark"] .admin-link-item {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-link-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-width: 80%;
+}
+
+.admin-link-item-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-link-item-url {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-link-delete-btn {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-link-delete-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* 배경 프리셋 선택 칩 */
+.bg-preset-chip {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s ease, border-color 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+
+.bg-preset-chip:hover {
+  transform: scale(1.15);
+}
+
+.bg-preset-chip.selected {
+  border-color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+/* 에러 메시지 */
+.error-msg {
+  font-size: 0.85rem;
+  color: #ef4444;
+  margin-top: 0.3rem;
+}
+
+/* ==========================================================================
+   푸터 및 반응형
+   ========================================================================== */
 footer {
   margin-top: auto;
   padding-top: 2rem;
@@ -572,5 +800,19 @@ footer a:hover {
   .favicon-container img {
     width: 26px;
     height: 26px;
+  }
+  
+  .admin-modal-box {
+    padding: 1.5rem 1rem;
+  }
+  
+  .admin-tabs {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  
+  .tab-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
   }
 }
