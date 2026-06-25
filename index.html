@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>교육 및 학급경영 링크 포털</title>
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Configuration Script -->
+  <script type="module" src="config.js"></script>
+</head>
+<body>
+
+  <!-- 상단 유틸리티 (다크 모드 토글) -->
+  <div class="top-bar">
+    <button class="theme-toggle-btn" id="theme-toggle" aria-label="테마 전환">
+      <!-- Sun Icon (Show in Dark Mode) -->
+      <svg class="sun-icon" viewBox="0 0 24 24" style="display: none;">
+        <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>
+      </svg>
+      <!-- Moon Icon (Show in Light Mode) -->
+      <svg class="moon-icon" viewBox="0 0 24 24">
+        <path d="M9.37 5.51c-.18 2.2.48 4.39 1.83 6.13 1.35 1.75 3.3 2.97 5.5 3.42-.58.33-1.22.56-1.89.69-2.07.41-4.21-.1-5.91-1.4-1.7-1.3-2.69-3.31-2.73-5.47-.02-.68.08-1.36.3-2.01.32-.97.9-1.82 1.68-2.47.16.8.52 1.55 1.06 2.18-.55.33-.94.84-1.12 1.44-.22.75-.12 1.56.28 2.23.4.67 1.05 1.15 1.81 1.3 2.27.45 4.54-.78 5.46-2.91.07-.16.12-.33.15-.5.06-.32.06-.65 0-.97-.04-.26-.14-.52-.29-.74.45.67.75 1.43.88 2.22.13.78.07 1.59-.18 2.33-.49 1.48-1.57 2.68-3.01 3.23-1.44.55-3.05.47-4.42-.23-1.37-.7-2.37-1.99-2.74-3.52-.37-1.53-.08-3.14.81-4.46.73-1.07 1.81-1.83 3.05-2.14z"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="container">
+    <!-- 헤더 -->
+    <header>
+      <h1 id="app-title">Edu & Class Link Portal</h1>
+      <p id="app-subtitle">자주 사용하는 학급 경영 및 수업 혁신용 웹 링크 모음</p>
+    </header>
+
+    <!-- 검색창 -->
+    <div class="search-wrapper">
+      <input type="text" id="search-bar" class="search-input" placeholder="검색하고 싶은 링크 또는 카테고리를 입력하세요...">
+      <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+
+    <!-- 카테고리 필터 영역 -->
+    <div class="categories" id="category-container">
+      <button class="category-tag active" data-category="all">전체</button>
+    </div>
+
+    <!-- 로딩/에러 표시창 -->
+    <div class="status-container" id="status-area">
+      <div class="spinner"></div>
+      <p class="status-message">구글 시트에서 데이터를 불러오고 있습니다...</p>
+    </div>
+
+    <!-- 링크 카드 그리드 -->
+    <div class="links-grid" id="links-grid" style="display: none;">
+      <!-- JavaScript를 통해 동적 생성됨 -->
+    </div>
+  </div>
+
+  <!-- 상세 설명 모달 창 -->
+  <div class="modal-overlay" id="info-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" id="modal-close" aria-label="닫기">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      
+      <div class="modal-favicon-wrapper">
+        <img id="modal-favicon" src="" alt="Favicon">
+      </div>
+      
+      <h2 class="modal-title" id="modal-title">패들렛</h2>
+      <span class="modal-badge" id="modal-category">수업혁신</span>
+      
+      <div class="modal-description" id="modal-description">
+        실시간 협업 및 아이디어 공유 게시판입니다.
+      </div>
+      
+      <a class="modal-action-btn" id="modal-link" href="#" target="_blank">
+        바로가기
+      </a>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
+  <footer>
+    <p>&copy; 2026 Edu & Class Hub. Powered by Google Sheets & Apps Script</p>
+  </footer>
+
+  <!-- Core JavaScript -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
