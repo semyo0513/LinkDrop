@@ -129,7 +129,7 @@
         <!-- 탭 메뉴 -->
         <div class="admin-tabs">
           <button class="tab-btn active" data-tab="tab-links-list">링크 목록</button>
-          <button class="tab-btn" data-tab="tab-add-link">링크 추가</button>
+          <button class="tab-btn" data-tab="tab-add-link" id="tab-add-link-btn">링크 추가</button>
           <button class="tab-btn" data-tab="tab-general-settings">환경 설정</button>
         </div>
 
@@ -140,8 +140,13 @@
           </div>
         </div>
 
-        <!-- 탭 2: 링크 추가 -->
+        <!-- 탭 2: 링크 추가/수정 -->
         <div id="tab-add-link" class="tab-content">
+          <!-- 수정 모드 활성화 알림 배너 -->
+          <div id="edit-mode-notice" style="display: none; background: rgba(79, 70, 229, 0.1); border-left: 4px solid var(--primary-color); padding: 0.8rem; border-radius: 12px; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-primary); font-weight: 500;">
+            ✏️ 링크 수정 모드가 활성화되었습니다. 수정 완료 후 저장을 눌러주세요.
+          </div>
+          
           <form id="add-link-form" onsubmit="event.preventDefault();">
             <div class="form-group">
               <label for="add-category">범주 (카테고리)</label>
@@ -160,10 +165,16 @@
               <textarea id="add-desc" class="admin-input" rows="2" placeholder="링크에 대한 간단한 설명을 입력하세요."></textarea>
             </div>
             <div class="form-group">
-              <label for="add-icon">커스텀 아이콘 (선택)</label>
+              <label for="add-icon">아이콘 (직접 입력 또는 아래 목록에서 선택)</label>
               <input type="text" id="add-icon" class="admin-input" placeholder="이모지(예: 📢) 또는 이미지 URL 주소">
+              
+              <!-- 기본 이모지 선택 피커 영역 -->
+              <div class="emoji-picker" id="emoji-picker-container">
+                <!-- 자바스크립트로 동적 로드 -->
+              </div>
             </div>
             <button class="modal-action-btn" id="submit-add-link-btn" style="margin-top: 1rem;">추가하기</button>
+            <button type="button" class="modal-action-btn cancel-btn" id="cancel-edit-btn" style="margin-top: 0.5rem; background: rgba(0,0,0,0.05); color: var(--text-primary); box-shadow: none; display: none;">수정 취소</button>
           </form>
         </div>
 
@@ -177,7 +188,24 @@
             <div class="form-group">
               <label for="settings-bg">배경화면 설정 (이미지 URL 또는 CSS 그라데이션)</label>
               <input type="text" id="settings-bg" class="admin-input" placeholder="URL 주소 또는 linear-gradient(...) 형태">
-              <div class="bg-presets" style="margin-top: 0.5rem; display: flex; gap: 0.5rem; justify-content: center;">
+              
+              <!-- 이미지 파일 직접 업로드 기능 -->
+              <div style="margin-top: 0.75rem;">
+                <label class="file-upload-label" for="bg-file-upload">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" style="margin-right: 0.5rem; vertical-align: middle;">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                  </svg>
+                  <span>배경 이미지 파일 직접 업로드</span>
+                </label>
+                <input type="file" id="bg-file-upload" accept="image/*" style="display: none;">
+                <div class="upload-preview-container" id="upload-preview-container" style="display: none;">
+                  <img id="upload-preview" src="" alt="배경 업로드 미리보기">
+                  <button type="button" class="remove-preview-btn" id="remove-preview-btn" title="이미지 삭제">×</button>
+                </div>
+              </div>
+
+              <!-- 프리셋 테마 리스트 -->
+              <div class="bg-presets" style="margin-top: 0.75rem; display: flex; gap: 0.5rem; justify-content: center;">
                 <span class="bg-preset-chip" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);" data-bg="linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)" title="기본 연회색"></span>
                 <span class="bg-preset-chip" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);" data-bg="linear-gradient(135deg, #0f172a 0%, #1e293b 100%)" title="기본 다크"></span>
                 <span class="bg-preset-chip" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);" data-bg="linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)" title="인디고"></span>

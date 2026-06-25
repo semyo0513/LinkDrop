@@ -1,9 +1,9 @@
 /**
- * Google Sheets 데이터를 웹앱으로 배포하고 관리(추가/삭제/설정 변경)하기 위한 Google Apps Script (GAS)
+ * Google Sheets 데이터를 웹앱으로 배포하고 관리(추가/삭제/수정/설정 변경)하기 위한 Google Apps Script (GAS)
  *
  * [작동 방식]
  * 1. doGet(e): '링크' 시트와 '설정' 시트의 데이터를 읽어 JSON 객체로 반환합니다. 시트가 없으면 기본값으로 자동 생성합니다.
- * 2. doPost(e): 비밀번호를 검증하고, 액션(링크 추가, 링크 삭제, 설정 업데이트)에 맞춰 구글 시트를 수정합니다.
+ * 2. doPost(e): 비밀번호를 검증하고, 액션(링크 추가, 링크 삭제, 링크 수정, 설정 업데이트)에 맞춰 구글 시트를 수정합니다.
  */
 
 function doGet(e) {
@@ -156,6 +156,46 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify({ status: "success" }))
         .setMimeType(ContentService.MimeType.JSON);
         
+    } else if (action === "updateLink") {
+      var linkSheet = ss.getSheetByName("링크");
+      if (!linkSheet) {
+        return ContentService.createTextOutput(JSON.stringify({ status: "error", message: "링크 시트를 찾을 수 없습니다." })).setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var linkData = linkSheet.getDataRange().getValues();
+      var headers = linkData[0];
+      var categoryIdx = headers.indexOf("범주") === -1 ? 0 : headers.indexOf("범주");
+      var titleIdx = headers.indexOf("내용") === -1 ? 1 : headers.indexOf("내용");
+      var linkIdx = headers.indexOf("링크") === -1 ? 2 : headers.indexOf("링크");
+      var descIdx = headers.indexOf("링크 설명") === -1 ? 3 : headers.indexOf("링크 설명");
+      var iconIdx = headers.indexOf("아이콘") === -1 ? 4 : headers.indexOf("아이콘");
+      
+      var oldUrl = payload.oldUrl.trim();
+      var updated = false;
+      
+      for (var i = 1; i < linkData.length; i++) {
+        if (String(linkData[i][linkIdx]).trim() === oldUrl) {
+          var rowNum = i + 1; // 1-based index
+          
+          linkSheet.getRange(rowNum, categoryIdx + 1).setValue(payload.category);
+          linkSheet.getRange(rowNum, titleIdx + 1).setValue(payload.title);
+          linkSheet.getRange(rowNum, linkIdx + 1).setValue(payload.url);
+          linkSheet.getRange(rowNum, descIdx + 1).setValue(payload.description || "");
+          linkSheet.getRange(rowNum, iconIdx + 1).setValue(payload.icon || "");
+          
+          updated = true;
+          break; // 첫 번째 일치 항목만 업데이트 후 종료
+        }
+      }
+      
+      if (updated) {
+        return ContentService.createTextOutput(JSON.stringify({ status: "success" }))
+          .setMimeType(ContentService.MimeType.JSON);
+      } else {
+        return ContentService.createTextOutput(JSON.stringify({ status: "error", message: "수정하려는 원래 링크를 시트에서 찾을 수 없습니다." }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+      
     } else if (action === "deleteLink") {
       var linkSheet = ss.getSheetByName("링크");
       if (!linkSheet) {

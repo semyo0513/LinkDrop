@@ -684,7 +684,7 @@ header p {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  max-width: 80%;
+  max-width: 70%;
 }
 
 .admin-link-item-title {
@@ -704,9 +704,15 @@ header p {
   text-overflow: ellipsis;
 }
 
-.admin-link-delete-btn {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
+/* 링크 관리 액션 버튼 영역 */
+.admin-link-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-link-delete-btn,
+.admin-link-edit-btn {
   border: none;
   width: 32px;
   height: 32px;
@@ -718,10 +724,152 @@ header p {
   transition: all 0.2s ease;
 }
 
+.admin-link-delete-btn {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
 .admin-link-delete-btn:hover {
   background: #ef4444;
   color: #ffffff;
   transform: scale(1.05);
+}
+
+.admin-link-edit-btn {
+  background: rgba(79, 70, 229, 0.1);
+  color: var(--primary-color);
+}
+
+.admin-link-edit-btn:hover {
+  background: var(--primary-gradient);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* 이모지 아이콘 피커 스타일 */
+.emoji-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  padding: 0.6rem;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+[data-theme="dark"] .emoji-picker {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.emoji-item {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.emoji-item:hover {
+  background: rgba(99, 102, 241, 0.15);
+  transform: scale(1.15);
+}
+
+.emoji-item.selected {
+  background: var(--primary-gradient);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* 이미지 파일 직접 업로드 스타일 */
+.file-upload-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  border: 2px dashed var(--search-border);
+  background: rgba(0, 0, 0, 0.01);
+  color: var(--text-secondary);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .file-upload-label {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.file-upload-label:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.upload-preview-container {
+  position: relative;
+  margin-top: 0.75rem;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  max-width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .upload-preview-container {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.upload-preview {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.remove-preview-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.remove-preview-btn:hover {
+  background: #ef4444;
+  transform: scale(1.1);
+}
+
+/* 취소 버튼 공통 */
+.cancel-btn:hover {
+  background: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="dark"] .cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* 배경 프리셋 선택 칩 */
